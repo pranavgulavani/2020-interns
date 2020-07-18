@@ -29,7 +29,7 @@ totalDays = daysDiff.days
 
 t =turtle.Turtle()
 screen = t.getscreen()
-screen.title("INR compared with EUR X-> Dates & Y-> currency value")
+screen.title("INR->Blue  & GBP->green compared with EUR X-> Dates & Y-> currency value")
 screen.tracer(30)
 screen.setworldcoordinates(0,0,maxCurValue,totalDays)
 t.goto(0,0)
@@ -44,6 +44,17 @@ for day , value in prices.items():
         print(value['INR'])
         t.goto(totalDay,math.log(value['INR']))
 
+t.color("white")
+t.goto(0,0)
+for day , value in prices.items():
+    day =datetime.datetime.strptime(day,'%Y-%m-%d')
+    if day>=startDate and day<= endDate:
+        daysDiff=day - startDate
+        totalDay =daysDiff.days
+        print(value['GBP'])
+        t.color("green")
+        t.goto(totalDay,math.log(value['GBP']))
+
 screen.update()
 screen.exitonclick()   
     
@@ -52,3 +63,6 @@ screen.exitonclick()
     
          
         
+
+
+
