@@ -43,8 +43,6 @@ for day , value in prices.items():
         totalDay =daysDiff.days
         print(value['INR'])
         t.goto(totalDay,math.log(value['INR']))
-
-
    
 screen.update()
 screen.exitonclick()   
