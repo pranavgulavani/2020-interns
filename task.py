@@ -4,51 +4,50 @@
 import json
 import turtle
 import datetime
-
-
-maxCurValue = 0
-
+import collections
+import math
 
 with open('data.json') as f :
     data = json.load(f)
-
+    
+# Extracting sub dictionary and sorting it
 prices = data["rates"]
+prices =collections.OrderedDict(sorted(prices.items()))
 
-
-for cost ,value in prices.items():
+# Extracting x-axis value
+maxCurValue = 0
+for day ,value in prices.items():
     if value['INR'] > maxCurValue:
         maxCurValue = value['INR']
 
-print(maxCurValue)  
+# Extracting y-axis value
 startDate = datetime.datetime(2020,1,1) 
 endDate = datetime.datetime(2020,1,31) 
 daysDiff = endDate - startDate
 totalDays = daysDiff.days
 
+
 t =turtle.Turtle()
 screen = t.getscreen()
-screen.title("INR compared with   EUR X->currency value & Y->Dates")
-screen.tracer(50)
-screen.setworldcoordinates(0,0,totalDays,maxCurValue)
+screen.title("INR compared with   EUR X->Dates & Y->currency value")
+screen.tracer(30)
+screen.setworldcoordinates(0,0,maxCurValue,totalDays)
 t.goto(0,0)
 t.color("blue")
-t.fillcolor("#bccee8")
-t.begin_fill()
+
+# plotting graph and math.log for flattening graph
+for day , value in prices.items():
+    day =datetime.datetime.strptime(day,'%Y-%m-%d')
+    if day>=startDate and day<=endDate:
+        daysDiff=day - startDate
+        totalDay =daysDiff.days
+        print(value['INR'])
+        t.goto(totalDay,math.log(value['INR']))
 
 
-for date,value in prices.items():
-    date = datetime.datetime.strptime(date,'%Y-%m-%d')
-    dateDiff = date - startDate
-    price = value['INR']      
-    t.goto(value['INR'],dateDiff.days) 
-
-     
-
-t.goto(maxCurValue,0)
-t.goto(0,0)
-t.end_fill()    
+   
 screen.update()
-screen.exitonclick()    
+screen.exitonclick()   
     
 
     
